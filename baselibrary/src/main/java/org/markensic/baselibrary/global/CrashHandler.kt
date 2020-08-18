@@ -82,8 +82,7 @@ object CrashHandler: Thread.UncaughtExceptionHandler {
                         Thread: ${p0.name}
                         Exception StackTrace:
                     """.trimIndent())
-                    ex.printStackTrace(writer)
-                    ex.forEarchCause { cause ->
+                    ex.forEarch { cause ->
                         cause.printStackTrace(writer)
                     }
                 }
@@ -93,10 +92,10 @@ object CrashHandler: Thread.UncaughtExceptionHandler {
         }
     }
 
-    private fun Throwable.forEarchCause(function: (cause: Throwable) -> Unit) {
-        cause?.also {
+    private fun Throwable.forEarch(function: (cause: Throwable) -> Unit) {
+        this.also {
             function(it)
-        }?.forEarchCause(function)
+        }.cause?.forEarch(function)
     }
 
     interface UploadListener {

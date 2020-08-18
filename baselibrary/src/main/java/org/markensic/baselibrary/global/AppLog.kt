@@ -1,8 +1,15 @@
 package org.markensic.baselibrary.global
 
 import android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE
+import android.os.Build
+import android.os.DeadSystemException
 import android.util.Log
 import org.markensic.baselibrary.api.utils.LogFileUtil
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
+import java.io.PrintWriter
+import java.lang.StringBuilder
+import java.net.UnknownHostException
 
 class AppLog {
 
@@ -22,9 +29,35 @@ class AppLog {
             return !forceDisEnable && forceEnable || isDebug
         }
 
-        private fun printlnLog(level: LogLevel, tag: String, message: String, log: ()->Int): Int {
+        private fun printlnLog(level: LogLevel, tag: String, message: String, tr: Throwable?, log: ()->Int): Int {
             return isEnable().let {
-                val logMsg = "${level.simpleTag}/$tag: $message"
+                val trMsg = StringBuilder()
+                tr?.forEarch { ex ->
+                    when (ex) {
+                        is UnknownHostException -> return@forEarch
+                        else -> {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && ex is DeadSystemException) {
+                                trMsg.append("DeadSystemException: The system died; earlier logs will point to the root cause")
+                                return@forEarch
+                            }
+
+                            ByteArrayOutputStream().use { baos ->
+                                PrintWriter(baos).use { write ->
+                                    ex.printStackTrace(write)
+                                }
+                                trMsg.append(baos.toString())
+                            }
+                        }
+                    }
+                }
+
+                val logMsg = trMsg.let {
+                    if (it.toString().isEmpty()) {
+                        "${level.simpleTag}/$tag: $message"
+                    } else {
+                        "${level.simpleTag}/$tag: $message\n$it"
+                    }
+                }
                 if (it) {
                     meetOutputLevel(level, logMsg, log)
                 } else {
@@ -53,32 +86,42 @@ class AppLog {
         }
 
 
-        fun v(tag: String, message: String): Int {
-            return printlnLog(LogLevel.VERBOSE, tag, message) {
-                Log.v(tag, message)
+        fun v(tag: String, message: String, tr: Throwable? = null): Int {
+            return printlnLog(LogLevel.VERBOSE, tag, message, tr) {
+                tr?.let {
+                    Log.v(tag, message, tr)
+                } ?: Log.v(tag, message)
             }
         }
-        fun e(tag: String, message: String): Int {
-            return printlnLog(LogLevel.ERROR, tag, message) {
-                Log.e(tag, message)
-            }
-        }
-
-        fun i(tag: String, message: String): Int {
-            return printlnLog(LogLevel.INFO, tag, message) {
-                Log.i(tag, message)
-            }
-        }
-
-        fun d(tag: String, message: String): Int {
-            return printlnLog(LogLevel.DEBUG, tag, message) {
-                Log.d(tag, message)
+        fun e(tag: String, message: String, tr: Throwable? = null): Int {
+            return printlnLog(LogLevel.ERROR, tag, message, tr) {
+                tr?.let {
+                    Log.e(tag, message, tr)
+                } ?: Log.e(tag, message)
             }
         }
 
-        fun w(tag: String, message: String): Int {
-            return printlnLog(LogLevel.WARN, tag, message) {
-                Log.w(tag, message)
+        fun i(tag: String, message: String, tr: Throwable? = null): Int {
+            return printlnLog(LogLevel.INFO, tag, message, tr) {
+                tr?.let {
+                    Log.i(tag, message, tr)
+                } ?: Log.i(tag, message)
+            }
+        }
+
+        fun d(tag: String, message: String, tr: Throwable? = null): Int {
+            return printlnLog(LogLevel.DEBUG, tag, message, tr) {
+                tr?.let {
+                    Log.d(tag, message, tr)
+                } ?: Log.d(tag, message)
+            }
+        }
+
+        fun w(tag: String, message: String, tr: Throwable? = null): Int {
+            return printlnLog(LogLevel.WARN, tag, message, tr) {
+                tr?.let {
+                    Log.w(tag, message, tr)
+                } ?: Log.w(tag, message)
             }
         }
 
@@ -88,6 +131,12 @@ class AppLog {
 
         fun setLogFilePath(path: String){
             LogFileUtil.logPath = path
+        }
+
+        private fun Throwable.forEarch(function: (cause: Throwable) -> Unit) {
+            this.also {
+                function(it)
+            }.cause?.forEarch(function)
         }
     }
 
