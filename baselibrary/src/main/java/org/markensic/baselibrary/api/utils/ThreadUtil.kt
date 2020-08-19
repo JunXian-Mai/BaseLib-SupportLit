@@ -83,22 +83,21 @@ object ThreadUtil {
         reject: RejectedExecutionHandler = ThreadPoolExecutor.AbortPolicy()
     ): ThreadPoolExecutor {
         val taskUseTime = cpuUseTime + ioUseTime
-        val coreSize: Int by lazy {
-            when (type) {
-                TaskType.CPU -> {
-                    cpuCount + 1
-                }
-                TaskType.IO -> {
-                    (cpuCount * (1 + ioUseTime.toFloat() / cpuUseTime)).roundToInt()
-                }
-                TaskType.SINGLE -> {
-                    1
-                }
-                else -> {
-                    TODO("Not EXIST TASK TYPE")
-                }
+        val coreSize = when (type) {
+            TaskType.CPU -> {
+                cpuCount + 1
+            }
+            TaskType.IO -> {
+                (cpuCount * (1 + ioUseTime.toFloat() / cpuUseTime)).roundToInt()
+            }
+            TaskType.SINGLE -> {
+                1
+            }
+            else -> {
+                TODO("Not EXIST TASK TYPE")
             }
         }
+
         val concurrent = when (interval) {
             0 -> {
                 taskUseTime * coreSize
@@ -113,33 +112,28 @@ object ThreadUtil {
                 }
             }
         }
-        val maxSize: Int by lazy {
-            when (type) {
-                TaskType.SINGLE -> {
-                    1
-                }
-                else -> {
-                    concurrent
-                }
+        val maxSize = when (type) {
+            TaskType.SINGLE -> {
+                1
+            }
+            else -> {
+                concurrent
             }
         }
 
-        val queueCount: Int by lazy {
-            when (type) {
-                TaskType.SINGLE -> {
-                    interval.let {
-                        if (it == 0) {
-                            1000 * concurrent
-                        } else {
-                            1000 / Math.abs(interval) * concurrent
-                        }
+        val queueCount = when (type) {
+            TaskType.SINGLE -> {
+                interval.let {
+                    when(interval) {
+                        0 -> 10000 * concurrent
+                        else -> 10000 / Math.abs(interval) * concurrent
                     }
                 }
-                else -> {
-                    when(interval) {
-                        0 -> concurrent
-                        else -> concurrent * (taskUseTime / interval)
-                    }
+            }
+            else -> {
+                when(interval) {
+                    0 -> concurrent
+                    else -> concurrent * (taskUseTime / interval)
                 }
             }
         }

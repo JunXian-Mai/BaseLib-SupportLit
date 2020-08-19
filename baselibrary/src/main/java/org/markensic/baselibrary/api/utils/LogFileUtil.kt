@@ -18,7 +18,7 @@ object LogFileUtil {
     private const val POOL_NAME = "logThreadPool"
 
     private val sp = SharedPreferencesMapDelegate(LOG)
-    private val pool = ThreadUtil.creatSingleTaskPool(POOL_NAME, 5, 4, 1, TimeUnit.MILLISECONDS, ThreadPoolExecutor.CallerRunsPolicy())
+    private val pool = ThreadUtil.creatSingleTaskPool(POOL_NAME, 5, 4, 1, TimeUnit.MILLISECONDS, ThreadPoolExecutor.DiscardOldestPolicy())
 
     private val checkValid = AtomicBoolean(false)
 
