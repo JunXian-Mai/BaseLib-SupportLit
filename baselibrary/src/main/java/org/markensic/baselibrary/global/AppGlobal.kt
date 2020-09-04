@@ -2,7 +2,6 @@ package org.markensic.baselibrary.global
 
 import android.app.Application
 import org.markensic.baselibrary.api.delegate.SharedPreferencesMapDelegate
-import org.markensic.baselibrary.api.utils.LogFileUtil
 import java.lang.Exception
 
 class AppGlobal {

@@ -2,7 +2,7 @@ package org.markensic.baselibrary.api.utils
 
 import java.io.File
 
-object FileUtil {
+object FileUtils {
     fun createFile(path:String): File {
         return File(path).also {
             if (!it.exists()) {

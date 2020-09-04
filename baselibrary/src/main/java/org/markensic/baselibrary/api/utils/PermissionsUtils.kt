@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 
-object PermissionsUtil {
+object PermissionsUtils {
     val readWritePermission = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     val netWorkPermission = arrayOf(Manifest.permission.INTERNET)

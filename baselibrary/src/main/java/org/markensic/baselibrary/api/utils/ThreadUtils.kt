@@ -1,11 +1,10 @@
 package org.markensic.baselibrary.api.utils
 
-import android.hardware.ConsumerIrManager
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import java.util.concurrent.*
 import kotlin.math.roundToInt
 
-object ThreadUtil {
+object ThreadUtils {
     val threadPoolMap: MutableMap<String, ThreadPoolExecutor> = mutableMapOf()
 
     val cpuCount: Int
@@ -21,8 +20,8 @@ object ThreadUtil {
         poolName: String,
         cpuUseTime: Int,
         ioUseTime: Int,
-        interval: Int,
-        taskUseTimeUnit: TimeUnit,
+        interval: Int = 0,
+        taskUseTimeUnit: TimeUnit = TimeUnit.MILLISECONDS,
         reject: RejectedExecutionHandler = ThreadPoolExecutor.AbortPolicy()
     ): ThreadPoolExecutor {
         return creatCommonTaskPool(
@@ -40,8 +39,8 @@ object ThreadUtil {
         poolName: String,
         cpuUseTime: Int,
         ioUseTime: Int,
-        interval: Int,
-        taskUseTimeUnit: TimeUnit,
+        interval: Int = 0,
+        taskUseTimeUnit: TimeUnit = TimeUnit.MILLISECONDS,
         reject: RejectedExecutionHandler = ThreadPoolExecutor.AbortPolicy()
     ): ThreadPoolExecutor {
         return creatCommonTaskPool(
@@ -59,8 +58,8 @@ object ThreadUtil {
         poolName: String,
         cpuUseTime: Int,
         ioUseTime: Int,
-        interval: Int,
-        taskUseTimeUnit: TimeUnit,
+        interval: Int = 0,
+        taskUseTimeUnit: TimeUnit = TimeUnit.MILLISECONDS,
         reject: RejectedExecutionHandler = ThreadPoolExecutor.AbortPolicy()
     ): ThreadPoolExecutor {
         return creatCommonTaskPool(
@@ -79,66 +78,76 @@ object ThreadUtil {
         type: TaskType,
         cpuUseTime: Int,
         ioUseTime: Int,
-        interval: Int,
-        taskUseTimeUnit: TimeUnit,
+        interval: Int = 0,
+        taskUseTimeUnit: TimeUnit = TimeUnit.MILLISECONDS,
         reject: RejectedExecutionHandler = ThreadPoolExecutor.AbortPolicy()
     ): ThreadPoolExecutor {
         val taskUseTime = cpuUseTime + ioUseTime
-        val coreSize: Int by lazy {
-            when (type) {
-                TaskType.CPU -> {
-                    cpuCount + 1
-                }
-                TaskType.IO -> {
-                    (cpuCount * (1 + ioUseTime.toFloat() / cpuUseTime)).roundToInt()
-                }
-                TaskType.SINGLE -> {
-                    1
-                }
-                else -> {
-                    TODO("Not EXIST TASK TYPE")
-                }
+        val coreSize = when (type) {
+            TaskType.CPU -> {
+                cpuCount + 1
             }
-        }
-        val concurrent = (taskUseTime * coreSize / interval.toFloat()).let {
-            if (it < coreSize) {
-                coreSize
-            } else {
-                it.roundToInt()
+            TaskType.IO -> {
+                (cpuCount * (1 + ioUseTime.toFloat() / cpuUseTime)).roundToInt()
             }
-        }
-        val maxSize: Int by lazy {
-            when (type) {
-                TaskType.SINGLE -> {
-                    1
-                }
-                else -> {
-                    concurrent
-                }
+            TaskType.SINGLE -> {
+                1
+            }
+            else -> {
+                TODO("Not EXIST TASK TYPE")
             }
         }
 
-        val queueCount: Int by lazy {
-            when (type) {
-                TaskType.SINGLE -> {
-                    100 * concurrent
+        val concurrent = when (interval) {
+            0 -> {
+                taskUseTime * coreSize
+            }
+            else -> {
+                (taskUseTime * coreSize / Math.abs(interval).toFloat()).let {
+                    if (it < coreSize) {
+                        coreSize
+                    } else {
+                        it.roundToInt()
+                    }
                 }
-                else -> {
-                    concurrent * (taskUseTime / interval)
+            }
+        }
+        val maxSize = when (type) {
+            TaskType.SINGLE -> {
+                1
+            }
+            else -> {
+                concurrent
+            }
+        }
+
+        val queueCount = when (type) {
+            TaskType.SINGLE -> {
+                interval.let {
+                    when(interval) {
+                        0 -> 10000 * concurrent
+                        else -> 10000 / Math.abs(interval) * concurrent
+                    }
+                }
+            }
+            else -> {
+                when(interval) {
+                    0 -> concurrent
+                    else -> concurrent * (taskUseTime / interval)
                 }
             }
         }
 
         return threadPoolMap[poolName].let { pool ->
             pool ?: ThreadPoolExecutor(
-                    coreSize,
-                    maxSize,
-                    (maxSize * taskUseTime).toLong(),
-                    taskUseTimeUnit,
-                    LinkedBlockingDeque<Runnable>(queueCount),
-                    getThreadFactory(poolName),
-                    reject
-                ).also {
+                coreSize,
+                maxSize,
+                (maxSize * taskUseTime).toLong(),
+                taskUseTimeUnit,
+                LinkedBlockingDeque<Runnable>(queueCount),
+                getThreadFactory(poolName),
+                reject
+            ).also {
                 threadPoolMap[poolName] = it
             }
         }

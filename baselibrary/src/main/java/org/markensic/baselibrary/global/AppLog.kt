@@ -4,9 +4,8 @@ import android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE
 import android.os.Build
 import android.os.DeadSystemException
 import android.util.Log
-import org.markensic.baselibrary.api.utils.LogFileUtil
+import org.markensic.baselibrary.api.utils.LogFileUtils
 import java.io.ByteArrayOutputStream
-import java.io.OutputStream
 import java.io.PrintWriter
 import java.lang.StringBuilder
 import java.net.UnknownHostException
@@ -25,7 +24,7 @@ class AppLog {
         var saveToFile = true
 
         private fun isEnable(): Boolean {
-            LogFileUtil.checkLogFileVailTime()
+            LogFileUtils.checkLogFileVailTime()
             return !forceDisEnable && forceEnable || isDebug
         }
 
@@ -78,7 +77,7 @@ class AppLog {
 
         private fun saveToFile( message: String, log: ()->Int): Int{
             return if (saveToFile) {
-                LogFileUtil.writeToFile(message)
+                LogFileUtils.writeToFile(message)
                 log()
             } else {
                 log()
@@ -126,11 +125,11 @@ class AppLog {
         }
 
         fun setSaveDay(vailDay: Int){
-            LogFileUtil.saveDay = vailDay
+            LogFileUtils.saveDay = vailDay
         }
 
         fun setLogFilePath(path: String){
-            LogFileUtil.logPath = path
+            LogFileUtils.logPath = path
         }
 
         private fun Throwable.forEarch(function: (cause: Throwable) -> Unit) {
