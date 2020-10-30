@@ -24,6 +24,8 @@ class MainFragment : Fragment() {
 
     private lateinit var logIoTest: Button
     private lateinit var crashLogTest: Button
+    private lateinit var xmlParserTest: Button
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +42,8 @@ class MainFragment : Fragment() {
 
         logIoTest = rootView.findViewById(R.id.log_io_test)
         crashLogTest = rootView.findViewById(R.id.crash_log_test)
+        xmlParserTest = rootView.findViewById(R.id.xml_parser_test)
+
 
         logIoTest.setOnClickListener {
             Thread {
@@ -70,10 +74,12 @@ class MainFragment : Fragment() {
             Log.e(":test", nullString!!)
         }
 
-        testXmlParser()
+        xmlParserTest.setOnClickListener {
+            testXmlParser()
+        }
     }
 
-
+    //region xml解析为json
     fun testXmlParser() {
         val xmlDate = """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -113,4 +119,5 @@ class MainFragment : Fragment() {
         val json = XmlParserUtils.pullTransactionXml(xmlDate)
         AppLog.e("XML", "json -> $json");
     }
+    //endregion
 }

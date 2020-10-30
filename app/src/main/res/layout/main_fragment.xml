@@ -22,4 +22,13 @@
         android:text="崩溃日志记录测试"
         app:layout_constraintStart_toEndOf="@+id/log_io_test"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/xml_parser_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XML数据Json解析测试"
+        app:layout_constraintStart_toEndOf="@+id/crash_log_test"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>
