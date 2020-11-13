@@ -32,7 +32,7 @@ object DisPlayUtils {
         return (physicsDm.density * size).toInt()
     }
 
-    fun px2dip(size: Int): Int {
-        return (size / physicsDm.density + 0.5f).toInt()
+    fun px2dip(size: Int): Float {
+        return size / physicsDm.density + 0.5f
     }
 }

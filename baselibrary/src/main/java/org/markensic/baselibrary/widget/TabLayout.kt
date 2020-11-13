@@ -12,7 +12,7 @@ import org.markensic.baselibrary.R
 import org.markensic.baselibrary.impl.ui.BaseUiView
 import java.text.FieldPosition
 
-class TabItem(val iconResId: Int, val labelResId: Int, val labelColorResId: Int, val tabFragmentClz: Class<out Fragment>?)
+class TabItem(val iconResId: Int, val labelResId: Int, val labelColorResId: Int, val tabFragmentClz: Class<out Fragment>)
 
 class TabView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
     LinearLayout(context, attrs, defStyleAttr), BaseUiView {
@@ -37,21 +37,28 @@ class TabLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         orientation = LinearLayout.HORIZONTAL
     }
 
-    var tabCounts: Int = 0
+    lateinit var tabItems: MutableList<TabItem>
+    lateinit var fragments: MutableList<Fragment>
     var selectView: View? = null
+    var tabCounts: Int = 0
+    var selectedIndex: Int = 0
 
     fun initTab(tabs: MutableList<TabItem>, firstPos: Int = 0, onTabClick: (TabItem) -> Unit) {
         val params = LayoutParams(0, LayoutParams.MATCH_PARENT)
         params.weight = 1F
         tabCounts = tabs.size
         if (tabCounts > 0) {
+            tabItems = tabs
+            fragments = tabItems.map {
+                it.tabFragmentClz.newInstance()
+            }.toMutableList()
             tabs.forEach { item ->
                 TabView(context).apply {
                     tag = item
                     fillView(item)
                     setOnClickListener {
-                        setCurrentTab(tabs.indexOf(item))
                         onTabClick(it.tag as TabItem)
+                        setCurrentTab(tabs.indexOf(item))
                     }
                     this@TabLayout.addView(this, params)
                 }
@@ -67,6 +74,7 @@ class TabLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                     isSelected = true
                     selectView?.isSelected = false
                     selectView = this
+                    selectedIndex = position
                 }
             }
         }

@@ -1,6 +1,7 @@
 package org.markensic.baselibrary.api.utils
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
+import java.lang.IllegalArgumentException
 import java.util.concurrent.*
 import kotlin.math.roundToInt
 
@@ -94,7 +95,7 @@ object ThreadUtils {
                 1
             }
             else -> {
-                TODO("Not EXIST TASK TYPE")
+                throw IllegalArgumentException("Not EXIST TASK TYPE")
             }
         }
 
