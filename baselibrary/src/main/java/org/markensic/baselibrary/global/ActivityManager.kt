@@ -24,5 +24,10 @@ object ActivityManager: ActivityLifecycle {
             it?.clear()
             weakCurrentActivity = WeakReference<Activity>(p0)
         }
+
+        weakLasterActivity.also {
+            it?.clear()
+            weakLasterActivity = WeakReference<Activity>(p0)
+        }
     }
 }
