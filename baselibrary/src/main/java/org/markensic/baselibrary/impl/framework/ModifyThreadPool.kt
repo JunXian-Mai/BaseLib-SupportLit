@@ -32,18 +32,16 @@ class ModifyThreadPool(
   override fun execute(command: Runnable?) {
     if (queue is ResizableCapacityLinkedBlockIngQueue) {
       (queue as ResizableCapacityLinkedBlockIngQueue<Runnable>).also { queue ->
-        if (queue.size > queue.remainingCapacity() - corePoolSize) {
+        if (queue.remainingCapacity() - corePoolSize <= 0) {
+          val allSize = queue.size + queue.remainingCapacity()
           if (!isSingle) {
             corePoolSize *= 2
             maximumPoolSize = corePoolSize
             prestartAllCoreThreads()
-          }
-          val c = if (isSingle) {
-            queue.remainingCapacity() * queue.remainingCapacity()
+            queue.setCapacity(allSize * maximumPoolSize)
           } else {
-            corePoolSize * maximumPoolSize
+            queue.setCapacity(allSize * 2)
           }
-          queue.setCapacity(c)
         }
       }
     }
