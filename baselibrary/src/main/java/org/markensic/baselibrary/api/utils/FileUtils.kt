@@ -13,7 +13,7 @@ import java.net.URI
 import java.nio.channels.FileChannel
 
 
-object FileKt {
+object FileUtils {
   val sDefaultPath =
     AppGlobal.sApplication.getExternalFilesDir(null)!!.absolutePath + File.separator
 

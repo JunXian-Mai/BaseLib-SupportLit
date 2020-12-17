@@ -4,7 +4,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
 import org.markensic.baselibrary.api.utils.DisPlayUtils
-import org.markensic.baselibrary.api.utils.FileKt
+import org.markensic.baselibrary.api.utils.FileUtils
 import org.markensic.baselibrary.global.AppGlobal.Companion.sApplication
 import java.io.File
 import java.text.SimpleDateFormat
@@ -82,7 +82,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
     return p1.let { ex ->
       val fileName =
         "Crash_${SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒").format(Date())}_${p1::class.java.simpleName}.log"
-      FileKt.createFile(path + fileName).also { file ->
+      FileUtils.createFile(path + fileName).also { file ->
         file.printWriter().use { writer ->
           writer.println(
             """

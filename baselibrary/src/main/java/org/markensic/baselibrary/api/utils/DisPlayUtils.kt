@@ -20,7 +20,3 @@ object DisPlayUtils {
 
   fun getPhysicsScreenHeight() = physicsDm.heightPixels
 }
-
-fun Int.px2dip() = this / DisPlayUtils.physicsDm.density + 0.5f
-
-fun Float.dp2px() = (DisPlayUtils.physicsDm.density * this).toInt()

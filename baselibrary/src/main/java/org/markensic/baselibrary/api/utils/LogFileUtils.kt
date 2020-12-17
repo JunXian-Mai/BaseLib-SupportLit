@@ -61,7 +61,7 @@ object LogFileUtils {
 
   fun checkLogFileVailTime() {
     if (checkValid.compareAndSet(false, true)) {
-      FileKt.iterateFileInDir(logPath) { file ->
+      FileUtils.iterateFileInDir(logPath) { file ->
         if (file.isFile && file.name.endsWith(".log")) {
           val logDateTime =
             file.name.substring(0, file.name.lastIndexOf(".log")).let { dateStr ->
@@ -83,7 +83,7 @@ object LogFileUtils {
     pool.execute {
       val logFilePath = "$logPath/$logFileName"
       val logText = "$msgPrefix $msg \n"
-      FileKt.appendToFile(logFilePath, logText)
+      FileUtils.appendToFile(logFilePath, logText)
     }
   }
 }
