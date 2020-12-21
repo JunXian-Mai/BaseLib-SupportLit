@@ -14,9 +14,9 @@ object DisPlayUtils {
     dm
   }
 
-  fun getPhysicsScreenDensity() = physicsDm.densityDpi
+  val densityDpi = physicsDm.densityDpi
 
-  fun getPhysicsScreenWidth() = physicsDm.widthPixels
+  val widthPixels = physicsDm.widthPixels
 
-  fun getPhysicsScreenHeight() = physicsDm.heightPixels
+  val heightPixels = physicsDm.heightPixels
 }
