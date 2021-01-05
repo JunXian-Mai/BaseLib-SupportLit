@@ -18,6 +18,10 @@ val Float.sp
     Resources.getSystem().displayMetrics
   )
 
+val Int.px
+  get() =
+    this
+
 val Int.dp
   get() =
     this.toFloat().dp
@@ -38,6 +42,14 @@ fun Int.px2Sp() = dimensionApply(
   this,
   Resources.getSystem().displayMetrics
 )
+
+fun Float.sin(angdeg: Float) = (this * kotlin.math.sin(Math.toRadians(angdeg.toDouble()))).toFloat()
+
+fun Float.cos(angdeg: Float) = (this * kotlin.math.cos(Math.toRadians(angdeg.toDouble()))).toFloat()
+
+fun Double.sin(angdeg: Double) = this * kotlin.math.sin(Math.toRadians(angdeg))
+
+fun Double.cos(angdeg: Double) = this * kotlin.math.cos(Math.toRadians(angdeg))
 
 fun dimensionApply(
   unit: Int, value: Int,

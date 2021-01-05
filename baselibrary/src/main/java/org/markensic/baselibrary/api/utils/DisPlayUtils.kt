@@ -14,6 +14,8 @@ object DisPlayUtils {
     dm
   }
 
+  val density = physicsDm.density
+
   val densityDpi = physicsDm.densityDpi
 
   val widthPixels = physicsDm.widthPixels
