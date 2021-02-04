@@ -3,7 +3,7 @@ package org.markensic.baselibrary.global
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import org.markensic.baselibrary.impl.lifecycle.ActivityLifecycle
+import org.markensic.baselibrary.framework.lifecycle.ActivityLifecycle
 import java.lang.ref.WeakReference
 import java.util.*
 

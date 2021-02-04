@@ -6,10 +6,8 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 
 object Permissions {
-  val readWritePermission = arrayOf(
-    Manifest.permission.READ_EXTERNAL_STORAGE,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-  )
+  val readWritePermission =
+    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
   val netWorkPermission = arrayOf(Manifest.permission.INTERNET)
 
@@ -26,10 +24,8 @@ object Permissions {
     Manifest.permission.PROCESS_OUTGOING_CALLS
   )
 
-  val locationPermission = arrayOf(
-    Manifest.permission.ACCESS_FINE_LOCATION,
-    Manifest.permission.ACCESS_COARSE_LOCATION
-  )
+  val locationPermission =
+    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
   val smsPermission = arrayOf(
     Manifest.permission.SEND_SMS,
@@ -50,11 +46,7 @@ object Permissions {
 
   fun requestPermission(activity: Activity, permissions: Array<String>) {
     permissions.forEach {
-      if (ActivityCompat.checkSelfPermission(
-          activity,
-          it
-        ) != PackageManager.PERMISSION_GRANTED
-      ) {
+      if (ActivityCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED) {
         ActivityCompat.requestPermissions(activity, permissions, 200)
         return@forEach
       }

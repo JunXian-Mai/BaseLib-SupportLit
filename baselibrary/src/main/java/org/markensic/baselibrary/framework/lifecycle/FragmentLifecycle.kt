@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.impl.lifecycle
+package org.markensic.baselibrary.framework.lifecycle
 
 import android.content.Context
 import android.os.Bundle
@@ -15,11 +15,7 @@ abstract class FragmentLifecycle : FragmentManager.FragmentLifecycleCallbacks() 
     }
   }
 
-  override fun onFragmentPreCreated(
-    fm: FragmentManager,
-    f: Fragment,
-    savedInstanceState: Bundle?
-  ) {
+  override fun onFragmentPreCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
     f.also {
       AppLog.i(tag, "$f pre created")
     }

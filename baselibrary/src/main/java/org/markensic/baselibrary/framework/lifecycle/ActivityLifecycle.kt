@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.impl.lifecycle
+package org.markensic.baselibrary.framework.lifecycle
 
 import android.app.Activity
 import android.app.Application

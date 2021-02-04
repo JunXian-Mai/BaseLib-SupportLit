@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.widget.helper.base
+package org.markensic.baselibrary.ui.widget.helper.base
 
 import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView

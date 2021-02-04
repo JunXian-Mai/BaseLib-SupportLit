@@ -1,9 +1,9 @@
-package org.markensic.baselibrary.widget.helper
+package org.markensic.baselibrary.ui.widget.helper
 
 import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import org.markensic.baselibrary.widget.helper.base.BaseItemSlideTouchHelperAdapterCallBack
+import org.markensic.baselibrary.ui.widget.helper.base.BaseItemSlideTouchHelperAdapterCallBack
 
 class ItemSlideTouchCallBack(
   val adapter: BaseItemSlideTouchHelperAdapterCallBack,

@@ -38,8 +38,7 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
   fun collectDeviceInfo(): String {
     return StringBuilder().also { builder ->
       sApplication.packageManager?.also { pm ->
-        val packInfo =
-          pm.getPackageInfo(sApplication.packageName, PackageManager.GET_ACTIVITIES)
+        val packInfo = pm.getPackageInfo(sApplication.packageName, PackageManager.GET_ACTIVITIES)
         val code: Int by lazy {
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             packInfo.longVersionCode.toInt()

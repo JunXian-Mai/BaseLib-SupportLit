@@ -1,9 +1,9 @@
 package org.markensic.baselibrary.api.utils
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
+import org.markensic.baselibrary.framework.thread.ModifyThreadPool
 import org.markensic.baselibrary.global.ActivityManager
 import org.markensic.baselibrary.global.AppLog
-import org.markensic.baselibrary.impl.framework.ModifyThreadPool
 import java.util.concurrent.RejectedExecutionHandler
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit

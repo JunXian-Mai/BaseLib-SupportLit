@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.impl.framework
+package org.markensic.baselibrary.framework.thread
 
 import java.util.concurrent.RejectedExecutionHandler
 import java.util.concurrent.ThreadFactory

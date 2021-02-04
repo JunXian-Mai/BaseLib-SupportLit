@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.global.extensions
+package org.markensic.baselibrary.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,7 +10,7 @@ fun Bitmap.toByteArray(): ByteArray {
   return baos.toByteArray()
 }
 
-fun Bitmap.compress(targetDensity: Int): Bitmap {
+fun Bitmap.compressInWidth(targetDensity: Int): Bitmap {
   val opt = BitmapFactory.Options()
   opt.inJustDecodeBounds = true
   val bytes = this.toByteArray()

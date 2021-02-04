@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.widget
+package org.markensic.baselibrary.ui.widget
 
 import android.content.Context
 import android.support.v4.app.Fragment
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.markensic.baselibrary.R
-import org.markensic.baselibrary.impl.ui.BaseUiView
+import org.markensic.baselibrary.framework.ui.BaseUiView
 
 class TabView @JvmOverloads constructor(
   context: Context,

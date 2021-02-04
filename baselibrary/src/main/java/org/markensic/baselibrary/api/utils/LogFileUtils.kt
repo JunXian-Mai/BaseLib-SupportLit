@@ -63,17 +63,16 @@ object LogFileUtils {
     if (checkValid.compareAndSet(false, true)) {
       FileUtils.iterateFileInDir(logPath) { file ->
         if (file.isFile && file.name.endsWith(".log")) {
-          val logDateTime =
-            file.name.substring(0, file.name.lastIndexOf(".log")).let { dateStr ->
-              SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(
-                dateStr,
-                ParsePosition(0)
-              )?.time?.also {
-                if ((Date().time - it) / (24 * 60 * 60 * 1000) > saveDay) {
-                  file.delete()
-                }
+          val logDateTime = file.name.substring(0, file.name.lastIndexOf(".log")).let { dateStr ->
+            SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(
+              dateStr,
+              ParsePosition(0)
+            )?.time?.also {
+              if ((Date().time - it) / (24 * 60 * 60 * 1000) > saveDay) {
+                file.delete()
               }
             }
+          }
         }
       }
     }

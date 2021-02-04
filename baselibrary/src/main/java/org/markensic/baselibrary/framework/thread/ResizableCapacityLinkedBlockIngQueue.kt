@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.impl.framework
+package org.markensic.baselibrary.framework.thread
 
 import org.markensic.baselibrary.api.utils.ReflectUtils
 import java.lang.reflect.Field

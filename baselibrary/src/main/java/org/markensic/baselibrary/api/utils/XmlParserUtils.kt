@@ -16,8 +16,7 @@ object XmlParserUtils {
   fun pullTransactionXml(xmlDate: String?): String? {
     val mapXml = mutableMapOf<String, Any?>()
     if (xmlDate?.isNotBlank() == true) {
-      val date =
-        xmlDate.replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "")
+      val date = xmlDate.replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "")
       val input = ByteArrayInputStream(date.toByteArray(Charsets.UTF_8))
       Xml.newPullParser().apply {
         val parent = Stack<String>()

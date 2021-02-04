@@ -1,4 +1,4 @@
-package org.markensic.baselibrary.impl.ui
+package org.markensic.baselibrary.framework.ui
 
 import android.app.Activity
 import android.view.View

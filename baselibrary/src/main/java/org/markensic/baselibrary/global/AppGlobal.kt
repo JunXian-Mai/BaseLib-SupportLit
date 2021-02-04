@@ -27,8 +27,8 @@ class AppGlobal {
       get() {
         if (_application == null) {
           val actThread = Class.forName("android.app.ActivityThread")
-          _application = actThread.getDeclaredMethod("currentApplication")
-            .invoke(null) as Application
+          _application =
+            actThread.getDeclaredMethod("currentApplication").invoke(null) as Application
         }
         return _application ?: throw Exception("NotFound this Application")
       }
